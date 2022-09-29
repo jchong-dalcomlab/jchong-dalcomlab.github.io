@@ -2,7 +2,7 @@
 layout: tag-list
 type: tag
 title: JAVA
-slug: cpp
+slug: java
 category: language
 sidebar: true
 description: >
