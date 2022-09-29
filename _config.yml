@@ -54,9 +54,9 @@ author:
 
 
 # Add links to the sidebar.
-menu:
-  - title:             DalcomLab HOME
-    url:               https://www.dalcomlab.com
+# menu:
+#   - title:             DalcomLab HOME
+#     url:               https://www.dalcomlab.com
 #   - title:             Web application server
 #     url:               /docs/
 #   - title:             About
