@@ -1,0 +1,7 @@
+---
+layout: post
+title:  "Introduction for C++ Language"
+date:   2022-09-29 19:14:52 +0900
+categories: language
+---
+C++ is Object orient language based C.
