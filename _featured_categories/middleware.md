@@ -1,9 +1,9 @@
 ---
 layout: list
 type: category
-title: Programming language
-slug: language
+title: Middleware
+slug: middleware
 menu: true
 description: >
-  Anything about programming language
+  Anything about middleware
 ---
