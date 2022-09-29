@@ -86,7 +86,7 @@ The PRO Version is scheduled to release on July 7th on Gumroad. Pre-Orders are o
       If you're technically inclined, you can adopt the code located in `_includes/js/search-worker.js` to your needs.
 
 <script src="https://utteranc.es/client.js"
-        repo="jchong-dalcomlab / jchong-dalcomlab.github.io"
+        repo="jchong-dalcomlab/jchong-dalcomlab.github.io"
         issue-term="title"
         theme="github-light"
         crossorigin="anonymous"
