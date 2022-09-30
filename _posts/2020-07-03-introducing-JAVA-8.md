@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Introducing JAVA 8
-category: language java
+category: language
 tag: java
 image: 
   path: /assets/img/blog/jeremy-bishop@0,5x.jpg

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Introducing C++ 11
-category: language cpp
+category: language
 tag: cpp
 image: 
   path: /assets/img/blog/jeremy-bishop@0,5x.jpg
