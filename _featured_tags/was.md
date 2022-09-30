@@ -1,7 +1,7 @@
 ---
 layout: list
 type: tag
-title: Web application server
+title: • Web application server
 slug: was
 categories: middleware
 menu: true

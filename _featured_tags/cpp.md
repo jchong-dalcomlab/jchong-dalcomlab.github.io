@@ -1,7 +1,7 @@
 ---
 layout: list
 type: tag
-title: C++
+title: • C++
 slug: cpp
 categories: language
 menu: true

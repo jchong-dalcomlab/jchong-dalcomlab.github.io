@@ -1,7 +1,7 @@
 ---
 layout: list
 type: tag
-title: JAVA
+title: • JAVA
 slug: java
 categories: language
 menu: true

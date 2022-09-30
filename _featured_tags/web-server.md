@@ -1,7 +1,7 @@
 ---
 layout: list
 type: tag
-title: Web server
+title: • Web server
 slug: webserver
 categories: middleware
 menu: true
