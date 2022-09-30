@@ -26,9 +26,9 @@ author1:
   # Comment/uncommet to show/hide
   # Rearrange to change the order in which they appear
   social:
-    twitter:         <username>
-    github:          dalcomlab
     home:            www.dalcomlab.com
+    github:          dalcomlab
+    facebook:        dalcomlab    
     # email:           <mail@domain.tld>
     # rss:             https://<url>/feed.xml
     # facebook:        <username>
@@ -69,15 +69,11 @@ author1:
 
 # Another author (optional)
 author2:
-  name:              <firtname> <lastname>
-  email:             <mail@domain.tld>
+  name:              jc Hong
+  email:             jchong@dalcomlab.com
   about:             |
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    DalcomLab CEO, FLEXUS AP devleoper
 
-    Open `_data/authors.yml` to edit this text.
 
-  picture:           https://placehold.it/128x128
-  twitter:           <username>
-  github:            <username>
+  picture:           https://avatars.githubusercontent.com/u/97577230?v=4
+  github:            jchong-dalcomlab
