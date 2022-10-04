@@ -30,7 +30,7 @@ description:           >
   개발자 세상을 꿈꾸는 DalcomLab의 기술 블로그 입니다. 우리 회사의 지적자산을 고객과 함께 누리고자 하는 마음에서 게시된 글입니다. 
 
 # A shorter description for the sidebar.
-tagline:               달콤랩 기술공유 블로그 입니다.
+tagline:               환영합니다! 달콤랩 기술 블로그 입니다.
 
 # A list of keywords for your blog
 keywords:              ["Development", "C++", "JAVA", "GO", "Jekyll"]
@@ -38,7 +38,7 @@ keywords:              ["Development", "C++", "JAVA", "GO", "Jekyll"]
 # A (square) logo for your site.
 # If provided, it will be shown at the top of the sidebar.
 # It also used by the `jekyll-seo-tag` plugin.
-logo:                  /assets/img/logo.png
+logo:                  /assets/img/DC.png
 
 # This should be the same author as first entry in `_data/authors.yml`.
 author:
