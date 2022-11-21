@@ -4,7 +4,7 @@ title: Servlet security
 category: was
 tag: servlet-spec
 image: 
-  path: /assets/img/blog/jeremy-bishop@0,5x.jpg
+  path: /assets/img/blog/cyber-security.jpg
 description: >
   본 문서는 Servlet specification 4.0 에서 설명한 Servlet security를 Servlet containter 구현 관점에서 해석 했다. 인증과 권한 그리고 웹
   리소스의 보안적 제안에 대한 내용을 주로 다룬다. 
