@@ -1,8 +1,9 @@
 ---
+author: author2
 layout: post
 title: Servlet security
-category: was
-tag: servlet-spec
+category: middleware
+tag: was
 image: 
   path: /assets/img/blog/cyber-security.jpg
 description: >
@@ -11,9 +12,8 @@ description: >
 sitemap: false
 ---
 
-Web applications are created by Application Developers who give, sell, or otherwise transfer the application to a 
-Deployer for installation into a runtime environment. Application Developers communicate the security requirements to 
-the Deployers and the deployment system. 
+웹 어플리케이션은 응용프로그램 개발자에 의해 개발되며 이를 배포자에게 주던, 팔던간에 런타입 환경에 설치며, 응용프로그램 개발자는 보안 요구사항을 배포자와 배포 
+시스템에 전달하게 된다. 
 
 <script src="https://utteranc.es/client.js"
         repo="jchong-dalcomlab/jchong-dalcomlab.github.io"
