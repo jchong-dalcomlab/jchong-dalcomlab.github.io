@@ -133,6 +133,81 @@ null을 반환한다.
 
 ## 프로그램적인 보안정책 설정
 
+이 섹션에서는 Servlet 컨테이너에 의해 시행되는 보안 제약을 구성하기 위해 Servlet spec에서 제공된 주석과 API방식을 설명한다.
+
+### annotation 방식의 Servlet 보안제약 설정
+
+Servlet containter에 보안 정책을 설정할 수 있는 방법은 크게 web.xml에 선언하는 방식과 servlet class에 선언하는 annotation방식이 존재한다.
+web.xml에 선언하는 보안정책은 요청 url을 중심으로 해당 리소스에 대한 보안 제약사항을 체크하는 방식이다. 이후 등장한 annotation방식은 servlet class
+가 보안 설정에 주인이 된다. 이로 인해 개념적으로 많은 혼란이 야기되는데 이 단원에서 차차 자세히 설명하기로 한다.
+
+#### ServletSecurity annotation
+
+이 어노테이션은 하나의 HttpConstraint와 복수개의 HttpMethodConstraint 하위 annotation을 구성요소로 갖을 수 있다. 적어도 하나는 있어야 이를 사용
+하는 의미가 있다. 
+
+![ServletSecurity anno](/assets/img/blog/ServletSecurity-anno.png)
+
+ServletSecurity annotation 하위에 구성되는 HttpMethodConstraint annotation은 특정 Http method 에 대한 서블릿 보안 제약을 설정한다. 
+하나의 @HttpMethodConstraint 는 하나의 http protocol method에 대한보안 제한을 지정 할 수 있다. 예를 들어 GET, POST 두 가지에 대한 보안제한을
+지정해야 한다면 @HttpMethodConstraint 두 나열해야 한다. 
+HttpConstraint annotation은 메서드를 지정하는 멤버가 없다. 그래서 ServletSecurity당 하나만 쓸수 있다. @HttpMethodConstraint에서 설정한 보
+안 제한을 제외한 나머지 http protocol method에 대한 보안제한 정책을 설정한다. 
+
+만약 @HttpMethodConstraint 하나도 없다면 모든 http protocol method에 대한 보안 제한 정책이 된다.
+
+다음 annotation 예시는 다음과 같은 보안 제약을 수행한다.
+GET에 대해서는 역할 보안제약을 두지 않고(제한 없이 요청 프로세스 처리), 나머지 method에 대해서 Administrator 역할 보안 제약을 확인 해야한다.
+
+```java
+@ServletSecurity(value=@HttpConstraint(rolesAllowed = "Administrator"),
+    httpMethodConstraints = @HttpMethodConstraint(value = "GET", emptyRoleSemantic = EmptyRoleSemantic.PERMIT))
+```
+<@HttpMethodConstraint, @HttpConstraint 같이 사용하는 예>
+
+다음 annotation 예시는 다음과 같은 보안 제약을 수행한다. 
+모든 http protocol method에 대해 Manager 역할 있어야 요청 프로세스를 처리할 수 있다. 
+
+```java
+@ServletSecurity(value=@HttpConstraint(rolesAllowed={"Manager"}, transportGuarantee = TransportGuarantee.NONE))
+```
+<@HttpConstraint 만 사용하는 예>
+
+*Empty Role Semantic (빈 역할에 대한 정책)*
+> 이 정책은 @HttpMethodConstraint의 emptyRoleSemantic 그리고 @HttpConstraint의 value 프로퍼티에 설정한다. 이는 rolesAllowed가 
+비어 있을때 해당 http protocol method의 요청을 어떻게 처리 할 것인가에 대한 정책 설정이다. PERMIT은 허용을 의미하고 DENY는 거부를 의미한다.
+
+*web.xml의 Empty Role Semantic (빈 역할에 대한 정책)*
+> web.xml에 빈 역할 보안 정책은 <auth-constraint> 를 어떻게 기술했느냐에 의해 결정된다. 아애 해당 xml element를 기술하지 않은 경우 PERMIT에
+해당하는 동작을 해야하고, element는 있으나 아무런 <role-name>도 기술되지 않은 경우 즉 <auth-constraint/> 라고 기술한 경우 DENY에 해당하는 처리
+를 하게된다.
+
+##### @HttpMethodConstraint annotation
+
+| 프로퍼티 | 타입 | 설명 | 기본값 | 필수여부 |
+|---|---|---|---|:---:|
+| `value` | java.lang.String | Http protocol method 이름 | N/A | O |
+| `emptyRoleSemantic` | ServletSecurity.EmptyRoleSemantic | 빈 역할에 대한 정책 | PERMIT | X |
+| `rolesAllowed` | java.lang.String[] | 허용된 역할 | empty | X |
+| `transportGuarantee` |  ServletSecurity.TransportGuarantee | 전송 데이터 보호 옵션 | NONE | X |
+
+##### @HttpMethodConstraint annotation
+
+| 프로퍼티 | 타입 | 설명 | 기본값 | 필수여부 |
+|---|---|---|---|:---:|
+| `value` | ServletSecurity.EmptyRoleSemantic | 빈 역할에 대한 정책 | PERMIT | X |
+| `rolesAllowed` | java.lang.String[] | 허용된 역할 | empty | X |
+| `transportGuarantee` |  ServletSecurity.TransportGuarantee | 전송 데이터 보호 옵션 | NONE | X |
+
+*HTTP protocol method*
+
+다음은 이 단원에서 여러번 거론된 Http protocol method에 종류다. 
+> GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH 
+
+각 method에 대한 자세한 의미는 다음 링크를 클릭하여 확인 하도록 한다.
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+
 ## 역할
 
 ## 인증
