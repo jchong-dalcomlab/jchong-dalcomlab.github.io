@@ -12,6 +12,24 @@ description: >
 sitemap: false
 ---
 
+## 목차
+
+[서론](#서론) 
+
+[선언적 보안](#선언적-보안) 
+
+[프로그램적 보안](#프로그램적-보안) 
+
+[프로그램적인 보안정책 설정](#프로그램적인-보안정책-설정) 
+
+[역할](#역할) 
+
+[인증](#인증) 
+
+[인증 정보에 대한 서버 사이드 추적](#인증-정보에-대한-서버-사이드-추적) 
+
+[보안 제한(제약) 명세하기](#보안-제한제약-명세하기) 
+
 웹 어플리케이션은 응용프로그램 개발자에 의해 개발되며 이를 배포자에게 주던, 팔던간에 런타입 환경에 설치며, 응용프로그램 개발자는 보안 요구사항을 배포자와 배포 
 시스템에 전달하게 된다. 이 정보는 애플리케이션의 배포 설명자, 애플리케이션 코드 내의 주석을 사용하거나 ServletRegistration.Dynamic 인터페이스의 
 setServletSecurity 메서드를 통해 프로그래밍 방식으로 전달될 수 있다.
@@ -118,7 +136,7 @@ null을 반환하게 된다.
 인자로 주어진 역할 이름이 사용자에게 할당된 realm 역할 이름으로 존재하는지 확인하는 메서드다. 역할에 소속 되어 있지않거나 해당 요청 프로세스가 인증 되어 있
 지 않은 경우 false를 반환하며 반대로 인자로 전달된 역할 이름이 사용자 역할 중 하나에 부합되면 true를 반환하게 된다. 
 
-## getUserPrincipal method
+### getUserPrincipal method
 
 `java.security.Principal getUserPrincipal()`
 
@@ -206,11 +224,52 @@ GET에 대해서는 역할 보안제약을 두지 않고(제한 없이 요청 �
 
 각 method에 대한 자세한 의미는 다음 링크를 클릭하여 확인 하도록 한다.
 
-https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+[HTTP request methods in mdn web docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)
 
 ## 역할
 
+보안 역할은 애플리케이션 개발가 정의한 사용자의 논리적 그룹이다. 애플리케이션이 배포되면, 역할은 배포자에 의해 런타임 환경의 주체나 그룹에 매핑된다. 
+서블릿 컨테이너는 주체의 보안 속성을 기반으로 들어오는 요청과 관련된 주체에 대해 선언적 또는 프로그래밍 보안을 시행한다. 이것은 다음 방법 중 하나로 발생할 수 
+있다:
+
+1. 배포자는 운영 환경의 사용자 그룹에 보안 역할을 매핑다. 호출 주체가 속한 사용자 그룹은 보안 속성에서 검색된다. 배포자가 보안 역할을 매핑한 사용자 그룹에 
+속한 경우에만 보안 역할이 있다.
+
+2. 배포자는 보안 정책 도메인의 주요 이름에 보안 역할을 매핑했다. 이 경우, 호출 주체의 주요 이름은 보안 속성에서 검색된다. 이름이 보안 역할에 매핑된 주체 
+이름과 동일한 경우에만 보안 역할이 있다.
+
 ## 인증
+
+인증(authentication)은 Web application server 관점에서 인가(authorization)과 함께 중요한 한축을 이루는 요소가 인증이다. Servlet spec에서
+다음 4가지 인증 방법에 대해 설명하고 있다. 
+
+* HTTP Basic Authentication
+* HTTP Digest Authentication
+* HTTPS Client Authentication
+* Form Based Authentication
+
+
+
+### HTTP Basic Authentication
+
+Basic 인증은 HTTP/1.0의 사양으로 username, password를 기반으로 한 인증 메커니즘이다. 
+web server는 web client에 사용자 인증을 요청한다. 이때 Web server는 로그인 요청(401 UNAUTHORIZED, 사실 기술적으로 응답임)을 내려 보낼때 다음
+과 같은 응답 헤더를 포함시킨다.  
+
+> WWW-Authenticate: BASIC realm="[realmName]" 
+
+이 응답을 사람이 알아듣기 표편한 표현으로 하자면 다음과 같을 것이다.
+*"당신이 요청한 웹 리소스는 인증이 필요한데 거기에 해당하는 영역 이름은 [realmName]이야"* 
+이런 응답을 받은 브라우저는 사용자가 Basic 인증을 진행할 수 있도록 다음과 같은 UI를 나타낸다.
+
+![Basice authentication](/assets/img/blog/basic-login-ux.png)
+
+그리고 브라우저는(웹 클라이언트)는 위 화면을 통해 사용자로부터 사용자 이름과 비밀번호를 얻어 웹 서버로 전송한다. 
+
+*Basic 인증의 문제점*
+
+Basic 인증시 사용되는 사용자 암호는 간단한 base64 encoding으로 server에 전송된다. 이는 안전하지 않으며 이 문제를 해결하려면 SSL을 사용하여 모든 전송
+데이터 자체를 안전하게 처리 해야 한다.
 
 ## 인증 정보에 대한 서버 사이드 추적
 
