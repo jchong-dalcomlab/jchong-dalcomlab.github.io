@@ -92,7 +92,7 @@ setServletSecurity 메서드를 통해 프로그래밍 방식으로 전달될 �
 >> 1. 인증 정보가 상이하여 login 메서드에서 ServletException을 throw 한 경우  
 >> 2. 해당 servlet context에 login 설정이 없는 경우 
 
-*servlet context login 설정 예시*
+**_servlet context login 설정 예시_**
 
 ```xml
 <!-- FORM based authentication --> 
@@ -109,13 +109,14 @@ setServletSecurity 메서드를 통해 프로그래밍 방식으로 전달될 �
 
 `void login(String username, String password) throws ServletException`
 
-authenticate 메서드를 호출하면 servlet context 설정에 정의된 인증 메커니즘과 login 메커니즘을 총 동원해서 요청 정보에 인증 정보가 없다면 클라이언트
-로 인증을 요청을 내려보내는 일부터 인증정보를 realm에 정의된 사용자 정보와 대조하여 인증을 처리하는 모든 일을 수행하게 된다. 이는 Servlet spce에 제약적
-이어서 때로는 구현에 제약을 갖게 한다. 이를 해결할 수 있는 방법으로 login method를 사용할 수 있다. 이는 servlet context의 login 설정에 제약을 받
-지 않는다. 어떤 방식으로던 username, password를 구해서 이 메서드를 호출하게 되면 그 야말로 로그인 처리가 된다.  
+authenticate 메서드를 호출하면 servlet context 설정에 정의된 login 메커니즘을 동원해서 요청 정보에 인증 정보가 없다면 클라이언트로 인증을 요청을 
+내려보내는 일부터 인증정보를 realm에 정의된 사용자 정보와 대조하여 인증을 처리하는 모든 일을 수행하게 된다. 이는 Servlet context에 정의된 
+4가지 종류의 login-config/auth-method 중 하나의 방식으로 동작해야하는 제약이 있다. 이를 해결할 수 있는 방법으로 login method를 사용할 수 있다. 
+이는 servlet context의 login 설정에 제약을 받지 않는다. 어떤 방식으로던 username, password를 구해서 이 메서드를 호출하게 되면 그 야말로 로그인 
+처리가 된다. 이 메서드를 이용하면 Servlet spec에서 제시하는 form 인증 제약을 벗어나 사용자 정의 로그인을 구현할 수 있게 해준다.
 당연한 이야기지만 로그인이 성공하면 getUserPrincipal, getRemoteUser, getAuthType 메서드들은 null이 아닌 값을 반환하게 된다. 
 
-이 메서드는 반환 값이 없다. id, password가 realm에서 정의한 사용자 인증정보와 달라 인증에 실패하게 되면 ServletException이 throw되며 그렇지 않은
+이 메서드는 반환 값이 없다. id, password가 realm에서 정의한 사용자 인증정보와 달라 인증에 실패하게 되면 ServletException이 throw 되며 그렇지 않은
 경우 정상 수행된다.
 
 ### logout method
@@ -145,7 +146,7 @@ null을 반환하게 된다.
 현재 인증 사용자의 `java.security.Principal` 객체를 반환한다. 만약 해당 요청의 사용자가 인증 정보를 가지고 있지 않은 경우(로그인 되지 않은 경우) 
 null을 반환한다.
 
-*보안 메서드에 대한 고찰*
+**_보안 메서드에 대한 고찰_**
 
 > 지금까지 설명한 6개의 HttpServletRequest 인터페이스에 정의된 보안 메서드들의 의미를 정리 해보려 한다. 웹 응용프로그램을 개발하는 입장에서 선언적인 보
 안정책을 통해서 웹 리소스에 대한 보안을 구현할 수 없거나 프로그램 로직에서 이를 판단하고 처리할 필요가 있을때 이 메서드들을 이용하여 원하는 보안 이슈를 해결 
@@ -193,11 +194,11 @@ GET에 대해서는 역할 보안제약을 두지 않고(제한 없이 요청 �
 ```
 <@HttpConstraint 만 사용하는 예>
 
-*Empty Role Semantic (빈 역할에 대한 정책)*
+**_Empty Role Semantic (빈 역할에 대한 정책)_**
 > 이 정책은 @HttpMethodConstraint의 emptyRoleSemantic 그리고 @HttpConstraint의 value 프로퍼티에 설정한다. 이는 rolesAllowed가 
 비어 있을때 해당 http protocol method의 요청을 어떻게 처리 할 것인가에 대한 정책 설정이다. PERMIT은 허용을 의미하고 DENY는 거부를 의미한다.
 
-*web.xml의 Empty Role Semantic (빈 역할에 대한 정책)*
+**_web.xml의 Empty Role Semantic (빈 역할에 대한 정책)_**
 > web.xml에 빈 역할 보안 정책은 <auth-constraint> 를 어떻게 기술했느냐에 의해 결정된다. 아애 해당 xml element를 기술하지 않은 경우 PERMIT에
 해당하는 동작을 해야하고, element는 있으나 아무런 <role-name>도 기술되지 않은 경우 즉 <auth-constraint/> 라고 기술한 경우 DENY에 해당하는 처리
 를 하게된다.
@@ -219,7 +220,7 @@ GET에 대해서는 역할 보안제약을 두지 않고(제한 없이 요청 �
 | `rolesAllowed` | java.lang.String[] | 허용된 역할 | empty | X |
 | `transportGuarantee` |  ServletSecurity.TransportGuarantee | 전송 데이터 보호 옵션 | NONE | X |
 
-*HTTP protocol method*
+**_HTTP protocol method_**
 
 다음은 이 단원에서 여러번 거론된 Http protocol method에 종류다. 
 > GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH 
@@ -247,9 +248,8 @@ GET에 대해서는 역할 보안제약을 두지 않고(제한 없이 요청 �
 
 * HTTP Basic Authentication
 * HTTP Digest Authentication
-* HTTPS Client Authentication
 * Form Based Authentication
-
+* HTTPS Client Authentication
 
 
 ### HTTP Basic Authentication
@@ -272,6 +272,43 @@ web server는 web client에 사용자 인증을 요청한다. 이때 Web server�
 
 Basic 인증시 사용되는 사용자 암호는 간단한 base64 encoding으로 server에 전송된다. 이는 안전하지 않으며 이 문제를 해결하려면 SSL을 사용하여 모든 전송
 데이터 자체를 안전하게 처리 해야 한다.
+
+### HTTP Digest Authentication
+
+Disgest 인증은 username, password를 기반으로 한다는 점에서 Basic 인증과 유사하다. 다른점은 password가 네트웍을 통해 전달되지 않는다는 것이다.
+다만 web client는 password에 대한 단방향성 암호화 해시를 server로 전달한다. 전달된 해시가 servler에 저장된 password text의 해시와 같은가를 통해
+인증 여부를 판단한다. 
+
+### Form Based Authentication
+
+우리말로 직역하면 "양식 기반의 인증" 이다. 여기서 말하는 양식은 html form을 의미 한다. 참고로 이 방식은 URL을 기반으로 한 세션 추적 메커니즘과 같이 사용
+할 수 없고 cooki 또는 SSL을 기반으로 한 세션 추적 모드에서 사용이 가능하다. form 인증에 사용될 form tag의 action은 항상 `j_security_check`
+라는 값을 가지고 있어야 한다. 다음 html/form을 참고한다.
+
+```html
+<form method=”POST” action=”j_security_check”>
+<input type=”text” name=”j_username”>
+<input type=”password” name=”j_password” autocomplete=”off”>
+</form>
+```
+
+이 방식은 인증이 없는 상태에서 인증이 필요한 web resource에 접근한 요청을 위와 같은 form이 포함된 html을 forward dispatch하여 인증정보를 입력 받은
+다음 이 정보를 서버로 요청하여 인증을 처리하는 흐름을 가지고 있다. 인증에 성공한 이 요청은 최종적으로 web client에 원래 요청 URL로 리디렉션을 요구하여 
+사용자의 요청 흐름을 이어나가는데 이 리디렉션에는 최초 요청의 헤더를 포함한 파라미터들이 존재하지 않는다. 따라서 form 인증 프로세스는 최초 요청의 요청 파라미
+터 헤더등을 보관 해두었다 마지막 리디렉션 단계의 요청을 원래 요청으로 치환 해야한다. 다음 시퀀스를 참고한다.
+
+![form authenticat seqence](/assets/img/blog/form-auth-seq.png)
+
+**#_Form Based Authentication과 session간의 상관 관계_**
+
+다른 인증과 달리 양식 기반의 인증은 인증 과정 이후에는 인증 정보를 web client가 알지 못한다. 다만 client로 부터 전달되는 SESSION-ID를 매개로 로그인
+정보를 복원하는 방식으로 인증의 상태를 유지한다. 이런 이유로 session이 invalidate 되거나 timeout이 되면 해당 인증 정보를 복원할 수 있는 방법이 없어져
+자동으로 로그 아웃이 된다.
+
+
+### HTTPS Client Authentication
+
+
 
 ## 인증 정보에 대한 서버 사이드 추적
 
