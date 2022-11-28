@@ -283,7 +283,8 @@ Disgest 인증은 username, password를 기반으로 한다는 점에서 Basic �
 
 우리말로 직역하면 "양식 기반의 인증" 이다. 여기서 말하는 양식은 html form을 의미 한다. 참고로 이 방식은 URL을 기반으로 한 세션 추적 메커니즘과 같이 사용
 할 수 없고 cooki 또는 SSL을 기반으로 한 세션 추적 모드에서 사용이 가능하다. form 인증에 사용될 form tag의 action은 항상 `j_security_check`
-라는 값을 가지고 있어야 한다. 다음 html/form을 참고한다.
+라는 값을 가지고 있어야 한다. 그리고 username 필드는 `j_username` password 필드는 `j_password` 라는 이름을 갖어야 한다. 그리고 password 필드
+는 autocomplete 속성이 ”off” 이어야 한다. 다음 html/form을 참고한다.
 
 ```html
 <form method=”POST” action=”j_security_check”>
@@ -292,10 +293,14 @@ Disgest 인증은 username, password를 기반으로 한다는 점에서 Basic �
 </form>
 ```
 
+이러한 규칙들만 지켜진다면 다른 인증 방식과 달리 로그인 화면의 디자인을 웹 개발자가 원하는대로 꾸밀수 있는 장점이 있다.
+
+**#_Form Based Authentication 처리 흐름_**
+
 이 방식은 인증이 없는 상태에서 인증이 필요한 web resource에 접근한 요청을 위와 같은 form이 포함된 html을 forward dispatch하여 인증정보를 입력 받은
 다음 이 정보를 서버로 요청하여 인증을 처리하는 흐름을 가지고 있다. 인증에 성공한 이 요청은 최종적으로 web client에 원래 요청 URL로 리디렉션을 요구하여 
 사용자의 요청 흐름을 이어나가는데 이 리디렉션에는 최초 요청의 헤더를 포함한 파라미터들이 존재하지 않는다. 따라서 form 인증 프로세스는 최초 요청의 요청 파라미
-터 헤더등을 보관 해두었다 마지막 리디렉션 단계의 요청을 원래 요청으로 치환 해야한다. 다음 시퀀스를 참고한다.
+터 헤더등을 보관 해두었다 마지막 리디렉션 단계의 요청을 원래 요청으로 치환 해야한다. 자세한 내용은 다음 시퀀스를 참고한다.
 
 ![form authenticat seqence](/assets/img/blog/form-auth-seq.png)
 
@@ -308,13 +313,84 @@ Disgest 인증은 username, password를 기반으로 한다는 점에서 Basic �
 
 ### HTTPS Client Authentication
 
-
+사용자 입장에서 HTTPS는 가장 강력한 인증 메커니즘을 제공한다. 이 메커니즘은 클라이언트가 공개 키 인증서(PKC)를 소유해야 한다. 현재, PKC는 전자상거래 
+애플리케이션과 브라우저 내에서의 single-signon에도 유용하다.
 
 ## 인증 정보에 대한 서버 사이드 추적
 
+런타임 환경에서 매핑되는 기본 보안 ID(예: 사용자 및 그룹)는 애플리케이션별이 아닌 환경에 따라 다르기 때문에 다음을 수행하는 것이 바람직하다.
+
+1. 로그인 메커니즘과 정책을 웹 애플리케이션이 배포된 환경의 속성으로 만든다. 
+2. 동일한 인증 정보를 사용하여 동일한 컨테이너에 배포된 모든 애플리케이션에 대한 주체를 나타낼 수 있다. 
+3. 보안 정책 도메인 경계를 넘은 경우에만 사용자를 재인증해야 한다.
+
 ## 보안 제한(제약) 명세하기
 
+### Servlet containter의 보안제한 기본값
 
+Servlet containter는 기본적으로 보안제한을 하지 않는것이 원칙이다. 보안 제한(Securtiy constrant)과 관련된 그 어떤 설정도 없다면 사용자가 요청한 
+리소스 url(static, jsp, servlet에 해당하는 url) 대한 응답이 그 어떻한 단계도 거치지 않고 바로 전달되어야 한다.
+
+### Servlet containter의 보안제한 명세
+
+Servlet containter의 보안 제한은 그야말로 보안적인 이유로 특정 리소스에 대한 <u>접근 권한</u>과 <u>접근 방법</u>에 대한 제한을 지정 할 수 있다.
+
+#### 역할기반의 리소스 접근 제한  
+
+제한을 둔다는 것을 좀 다르게 생각하면 요청자에게 요구되는 자격이 필요하다로 생각 해볼수도 있다. 접근 권한은 특정 역할(role)이 특정 리소스를 얻기 위해 필요
+하다는 뜻이 되며 이는 해당 역할을 갖고 있는 사용자 로그인을 필요로 한다. "/acme/wholesale/* url 패턴에 해당하는 리소스는 CONTRACTOR 역할이 필요하고 
+이 제한은 POST에만 적용된다." 와 같은 제약사항을 web.xml에 기술하는 것으로 제한을 지정 할 수 있다.
+
+```html
+
+<security-constraint>
+    <web-resource-collection>
+     <web-resource-name>wholesale 2</web-resource-name>
+     <url-pattern>/acme/wholesale/*</url-pattern>
+     <http-method>POST</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+     <role-name>CONTRACTOR</role-name>
+    </auth-constraint>
+</security-constraint>
+
+```
+
+위와 같이 설정이 되어 있는 리소스를 대상으로 한 요청이 인증이 없다면 web client로 인증이 필요하다는 응답을 보내 로그인을 유도한다. 만약 인증은 있으나 역할
+에 부합하지 않는다면 403(Forbidden)을 응답하여 사용자가 해당 리소스에 대한 권한이 없음을 알릴 것이다. 
+
+**_역할(Role)과 사용자 그리고 realm_**
+
+이미 수차례 언급된 역할과 사용자는 containter의 realm에 정의된다. 바꾸어 말하면 realm에는 역할과 사용자가 정의되어 있다. 사용자는 하나 이상의 역할을 
+지정할 수 있으며 역할이 하나도 없을 수 있다. 이런 내용이 정의되어 있는 realm은 containter상에 존재하며 각 구현체마다 이를 정의한 방식이 상이하다. 관련
+데이터를 RDB에 저장 하는 경우도 xml과 같은 파일에 저장 하는 경우도 있다. 
+
+#### 데이터 전송방식 제한 
+
+이번엔 접근 방법에 대한 제한이다. 순수한 HTTP protocol은 송수신 데이터에 대한 보안을 제공하지 않는다. (전송 보안을 위해 나온 대안이 HTTPS다.) 
+다음 예제는 이전에 역할기반의 리소스 접근 제한에 한가지 요소를 더 추가 했다. `<transport-guarantee>CONFIDENTIAL</transport-guarantee>` 
+이 요소를 추가해서 무엇 보다도 통신은 비밀을 유지시켜 달라고 명시한다. 이렇게 설정 해놓고 해당 리소스를 순수한 http로 접근하면 containter는 권한은 확인
+하기도 전에 web client를 향해 HTTPS 리디렉션 시킨다. 
+
+```html
+
+<security-constraint>
+    <web-resource-collection>
+     <web-resource-name>wholesale 2</web-resource-name>
+     <url-pattern>/acme/wholesale/*</url-pattern>
+     <http-method>POST</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+     <role-name>CONTRACTOR</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+     <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+</security-constraint>
+
+```
+
+다시 한번 이야기 하지만 위에서 설명한 모든 제한은 지정된 HTTP protocol method에 한정된다. 나머지 method는 무사 통과다. 
 
 <script src="https://utteranc.es/client.js"
         repo="jchong-dalcomlab/jchong-dalcomlab.github.io"
