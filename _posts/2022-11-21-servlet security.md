@@ -328,7 +328,7 @@ Disgest 인증은 username, password를 기반으로 한다는 점에서 Basic �
 
 이러한 규칙들만 지켜진다면 다른 인증 방식과 달리 로그인 화면의 디자인을 웹 개발자가 원하는대로 꾸밀수 있는 장점이 있다.
 
-**#_Form Based Authentication 처리 흐름_**
+**_Form Based Authentication 처리 흐름_**
 
 이 방식은 인증이 없는 상태에서 인증이 필요한 web resource에 접근한 요청을 위와 같은 form이 포함된 html을 forward dispatch하여 인증정보를 입력 받은
 다음 이 정보를 서버로 요청하여 인증을 처리하는 흐름을 가지고 있다. 인증에 성공한 이 요청은 최종적으로 web client에 원래 요청 URL로 리디렉션을 요구하여 
@@ -337,7 +337,7 @@ Disgest 인증은 username, password를 기반으로 한다는 점에서 Basic �
 
 ![form authenticat seqence](/assets/img/blog/form-auth-seq.png)
 
-**#_Form Based Authentication과 session간의 상관 관계_**
+**_Form Based Authentication과 session간의 상관 관계_**
 
 다른 인증과 달리 양식 기반의 인증은 인증 과정 이후에는 인증 정보를 web client가 알지 못한다. 다만 client로 부터 전달되는 SESSION-ID를 매개로 로그인
 정보를 복원하는 방식으로 인증의 상태를 유지한다. 이런 이유로 session이 invalidate 되거나 timeout이 되면 해당 인증 정보를 복원할 수 있는 방법이 없어져
