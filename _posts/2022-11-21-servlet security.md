@@ -90,7 +90,7 @@ setServletSecurity 메서드를 통해 프로그래밍 방식으로 전달될 �
 
 > authenticate method가 false를 반환하는 경우
 >> 1. 인증 정보가 상이하여 login 메서드에서 ServletException을 throw 한 경우  
->> 2. 해당 servlet context에 login 설정이 없는 경우 
+>> 2. 해당 servlet context에 login 설정이 없는 경우(인증 단원에서 자세히 다룬다.) 
 
 **_servlet context login 설정 예시_**
 
@@ -251,6 +251,39 @@ GET에 대해서는 역할 보안제약을 두지 않고(제한 없이 요청 �
 * Form Based Authentication
 * HTTPS Client Authentication
 
+### 인증방법 및 관련 옵션설정
+
+Servlet containter의 web.xml의 login-config를 편집하여 위에서 나열한 인증 방법 및 그와 관련된 추가 옵션을 지정할 수 있다. 인증을 설정하는 방식은
+web.xml 편집이 유일한 방법이다. (다른 security 요소들과 달리 인증은 annotation이나 servlet api로 설정하는 방법이 없다.)
+
+**_form인증 설정 예시_**
+```xml
+<login-config> 
+    <auth-method>FORM</auth-method>
+    <realm-name>dalcomlab-ent</realm-name> 
+    <form-login-config> 
+        <form-login-page>/login.jsp</form-login-page> 
+        <form-error-page>/error.jsp</form-error-page> 
+    </form-login-config> 
+</login-config>
+```
+
+**_auth-method에 지정할 수 있는 값_**
+
+| auth-method | 설명 |
+|---|---|
+| `BASIC` | HTTP Basic Authentication |
+| `DIGEST` | HTTP Digest Authentication |
+| `FORM` | Form Based Authentication, login 및 error 페이지에 대한 리소스 추가 설정이 필요함 |
+| `CLIENT-CERT` |  HTTPS Client Authentication |
+
+**_realm-name_**
+
+인증 과정에서 사용자 인증정보(username, password) 관리하는 servlet containter의 구성요소를 지칭하는 이름이다. 이 이름에 해당하는 realm을 통해 
+인증을 실행하는 목적으로 사용될수 있으나 servlet containter 구현체 마다 동작이 다르다. TOMCAT같은 경우 해당 설정을 하지 않아도 가장 가까운 realm을
+통해 인증을 실행한다. FlexusAP는 역시 해당 설정을 하지 않으면 가장 가까운(예를 들어 context에 realm설정 되어 있다면 해당 realm이 가장 가까운 것에
+해당하며 그렇지 않으면 host->service->server 순으로 가까운 것을 찾음) realm을 찾는다. `real-name` 설정이 존재한다면 해당 이름의 realm 객체를 
+찾는다.  
 
 ### HTTP Basic Authentication
 
@@ -341,7 +374,7 @@ Servlet containter의 보안 제한은 그야말로 보안적인 이유로 특�
 하다는 뜻이 되며 이는 해당 역할을 갖고 있는 사용자 로그인을 필요로 한다. "/acme/wholesale/* url 패턴에 해당하는 리소스는 CONTRACTOR 역할이 필요하고 
 이 제한은 POST에만 적용된다." 와 같은 제약사항을 web.xml에 기술하는 것으로 제한을 지정 할 수 있다.
 
-```html
+```xml
 
 <security-constraint>
     <web-resource-collection>
@@ -364,6 +397,56 @@ Servlet containter의 보안 제한은 그야말로 보안적인 이유로 특�
 이미 수차례 언급된 역할과 사용자는 containter의 realm에 정의된다. 바꾸어 말하면 realm에는 역할과 사용자가 정의되어 있다. 사용자는 하나 이상의 역할을 
 지정할 수 있으며 역할이 하나도 없을 수 있다. 이런 내용이 정의되어 있는 realm은 containter상에 존재하며 각 구현체마다 이를 정의한 방식이 상이하다. 관련
 데이터를 RDB에 저장 하는 경우도 xml과 같은 파일에 저장 하는 경우도 있다. 
+
+**_빈(empty) 역할 정책_**
+
+annotation 방식의 보안제한을 설명하는 chapter에서 이미 언급이된 내용이지만 다시 집고 넘어간다. 아래 예와 같이 auth-constraint 항목이 아애 없으면 
+PUT method 요청의 역할 제한은 없다는 뜻이된다. (아래 예는 사족이다. 데이터 전송 제한 마저 없다면 쓸 이유가 없는 설정이 된다.)
+
+```xml
+
+<security-constraint>
+    <web-resource-collection>
+     <web-resource-name>wholesale 2</web-resource-name>
+     <url-pattern>/acme/wholesale/*</url-pattern>
+     <http-method>PUT</http-method>
+    </web-resource-collection>    
+</security-constraint>
+
+```
+그러나 여기에 아래와 같이 빈 `auth-constraint` 를 추가하면 의미은 완전히 반전된다. 해당 리소스에 대한 PUT 요청을 모두 거부(DENY)하기 위해 사용된다. 
+
+```xml
+
+<security-constraint>
+    <web-resource-collection>
+     <web-resource-name>wholesale 2</web-resource-name>
+     <url-pattern>/acme/wholesale/*</url-pattern>
+     <http-method>PUT</http-method>
+    </web-resource-collection>    
+    <auth-constraint/>
+</security-constraint>
+
+```
+
+**_명시하지 않은 HTTP protocol method에 대한 거부(DEYN) 정책_**
+
+빈 역할 정책으로 일일히 특정 HTTP protocol method에 대한 거부 정책을 명시하는 것이 받아들이기에 따라 불현하고 난잡할 수 있다. 이를 위해 Servlet 
+containter 레벨이서 편리한 장치를 제공하는데 `deny-uncovered-http-methods`를 `web-app` 하위에 적용하면 된다. 
+
+```xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <deny-uncovered-http-methods/>
+    <!-- 중략 -->
+</web-app>
+
+```
 
 #### 데이터 전송방식 제한 
 
@@ -390,7 +473,28 @@ Servlet containter의 보안 제한은 그야말로 보안적인 이유로 특�
 
 ```
 
-다시 한번 이야기 하지만 위에서 설명한 모든 제한은 지정된 HTTP protocol method에 한정된다. 나머지 method는 무사 통과다. 
+다시 한번 이야기 하지만 위에서 설명한 모든 제한은 지정된 HTTP protocol method에 한정된다. 나머지 method를 사용한 요청은 무사통과다. 
+
+
+#### Servlet contatiner의 Security constraint 자료구조
+
+간단히 특정 요청 url에 대해 적절한 보안 제한을 설정한다는 측면에서 보면 지금까지의 설명으로 만으로 충분할 것이다. 그러나 Servlet spec은 다음과 같은 
+Security constraint 자료구조를 가지고 있으며 이를 복잡, 다양하게 사용하려는 웹 개발자나 containter를 개발하는 필자와 같은 개발자에게는 이에 대한 좀더 
+면밀한 검토가 필요할 것이다.
+
+![security constraint structure](/assets/img/blog/security-constraint-structure.png)
+
+##### url-patten mapping 규칙
+
+security-constraint element는 web-app 내에 복수개 설정될 수 있다. 또한 security-constraint element 내에 복수의 
+web-resource-collection이 존재할 수 있고 또 그 아래 url-pattern이 복수개 존재 할 수 있다. 이런 이유로 요청이 다양한 url-patten에 해당할 가능성
+이 존재한다. Servlet spec에서는 이를 servlet mapping 규칙과 동일하다고 설명한다.
+
+##### http-method, http-method-omission 
+
+요청 정보의 url과 더불어 매칭을 확인해야 하는 또 한가지 조건이 HTTP protocol method이다. security-constraint/web-resource-collection/
+http-method 혹은 http-method-omission을 각각 복수개 설정 할 수 있다. http-method-omission 요소는 지정된 method를 제외한 나머지에 대한 제한
+으로 동작한다. 따라서 두 요소가 동시에 존재하는 것은 논리적 모순이 된다. 
 
 <script src="https://utteranc.es/client.js"
         repo="jchong-dalcomlab/jchong-dalcomlab.github.io"
