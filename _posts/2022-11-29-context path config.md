@@ -12,8 +12,6 @@ description: >
 sitemap: false
 ---
 
-## 서론
-
 구현체 마다 다르지만 Web application server(이하 server)에는 복수의 host를 구성할 수 있으며 하나의 host내에는 복수의 web application을 배포
 할 수 있다. web application은 Servlet API상에서는 context라는 개념으로 대입된다. (Web application == context) 하나의 host내에서 각각의
 context를 구분하기 위한 방법으로 context path를 부여 받는다. 다음 두 가지 url을 예로 설명한다.
@@ -26,7 +24,6 @@ www.dalcomlab.com host에는 admin이라는 web application과 document라는 we
 그리고 "/document"에 해당하는 부분 경로가 context path다. 이 경로는 Servlet API의 `ServletContext#getContextPath`를 이용하여 얻을 수 있
 다. 이 글은 이 context 경로를 지정하는 3가지 방법을 설명하고자 한다.
 
-## 본론
 
 ### 배포 파일이름으로 context path를 결정: 가장 쉬운 방법
 
