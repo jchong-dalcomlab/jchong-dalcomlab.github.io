@@ -17,7 +17,8 @@ sitemap: false
 context를 구분하기 위한 방법으로 context path를 부여 받는다. 다음 두 가지 url을 예로 설명한다.
 
 **_context path_**
-> http://www.dalcomlab.com/admin/Users.jsp
+> http://www.dalcomlab.com/admin/Users.jsp 
+
 > http://www.dalcomlab.com/document/ServletSpec.jsp
 
 www.dalcomlab.com host에는 admin이라는 web application과 document라는 web application이 배포되어 있음을 가정한다. 이 url중 "/admin"
@@ -33,7 +34,8 @@ www.dalcomlab.com host에는 admin이라는 web application과 document라는 we
 
 **_참고> 구현체 별 web application 기본 배포 디렉터리_**
 
-> FlexusAP, TOMCAT, jetty는 server 디렉터리 하위에 webapps
+> FlexusAP, TOMCAT, jetty는 server 디렉터리 하위에 webapps 
+
 > glassfish는 server 디렉터리 하위에 glassfish/domains/domain1/autodeploy
 
 ### web application 배포 서술자(deployment descripter)에 default-context-path 지정
