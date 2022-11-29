@@ -45,8 +45,8 @@ setServletSecurity 메서드를 통해 프로그래밍 방식으로 전달될 �
 ## 서론
 
 웹 애플리케이션에는 많은 사용자가 액세스할 수 있는 리소스가 포함되어 있다. 이러한 자원들은 종종 인터넷과 같은 보호되지 않은 개방형 네트워크를 통과한다. 
-그러한 환경에서, 상당수의 웹 애플리케이션은 보안 요구 사항을 가질 것이다. 
-상세 구현에 대한 차이가 있을 수 있지만 servlet 컨테이너 메커니즘과 인프라스트럭쳐에 대해 다음과 같은 공통된 특성이 요구된다.
+이런 조건에서, 상당수의 웹 애플리케이션은 보안 요구사항을 필요로 한다. 
+상세 구현에 대한 차이가 있을 수 있지만 servlet 컨테이너 메커니즘과 인프라스트럭처에 대해 다음과 같은 공통된 특성이 요구된다.
 
 * 인증: 통신요소가 접근 권한이 있는 특정 신원을 대신하여 행동하고 있음을 증명하는 수단
 
@@ -63,7 +63,7 @@ setServletSecurity 메서드를 통해 프로그래밍 방식으로 전달될 �
 한다. 런타임에 서블릿 컨테이너는 보안 정책 표현을 사용하여 인증과 인증을 시행한다.
 
 보안 모델은 웹 애플리케이션의 정적 콘텐츠 부분과 클라이언트가 요청한 애플리케이션 내의 서블릿 및 필터에 적용된다. 보안 모델은 서블릿이 RequestDispatcher
-를 사용하여 foward 또는 include를 사용하여 정적 리소스 또는 서블릿을 호출할 때 적용되지 않는다.
+를 사용하여 foward 또는 include를 사용하여 서블릿을 호출할 때는 적용되지 않는다.
 
 
 ## 프로그램적 보안
@@ -473,6 +473,20 @@ containter 레벨이서 편리한 장치를 제공하는데 `deny-uncovered-http
 
 ```
 
+**_transport-guarantee에 지정할 수 있는 값_**
+
+| transport-guarantee | 설명 |
+|---|---|
+| `NONE` | 전송 데이터 제한 없음, 해당 설정을 하지 않은 경우와 동일한 결과 |
+| `CONFIDENTIAL` | 전송중 데이터 기밀이 보장되어야 한다는 의미 |
+| `INTEGRAL` | 전송중 데이터 무결성이 보장되어야 한다는 의미 |
+
+**_CONFIDENTIAL VS INTEGRAL_**
+
+데이터 기밀성과 무결성 보장 요구는 의미론적으로 구별되는 보안요소이긴 한데 이 보안 요구사항을 servlet container 내에서는 SSL 리디렉션이라는 동일한 방법
+으로 처리하게 되므로 사용자가 둘중 어떤 설정을 지정하더라도 동일한 결과를 얻게 된다.
+
+
 다시 한번 이야기 하지만 위에서 설명한 모든 제한은 지정된 HTTP protocol method에 한정된다. 나머지 method를 사용한 요청은 무사통과다. 
 
 
@@ -490,11 +504,13 @@ security-constraint element는 web-app 내에 복수개 설정될 수 있다. �
 web-resource-collection이 존재할 수 있고 또 그 아래 url-pattern이 복수개 존재 할 수 있다. 이런 이유로 요청이 다양한 url-patten에 해당할 가능성
 이 존재한다. Servlet spec에서는 이를 servlet mapping 규칙과 동일하다고 설명한다.
 
-##### http-method, http-method-omission 
+##### web-resource-collection/http-method, http-method-omission 
 
 요청 정보의 url과 더불어 매칭을 확인해야 하는 또 한가지 조건이 HTTP protocol method이다. security-constraint/web-resource-collection/
 http-method 혹은 http-method-omission을 각각 복수개 설정 할 수 있다. http-method-omission 요소는 지정된 method를 제외한 나머지에 대한 제한
-으로 동작한다. 따라서 두 요소가 동시에 존재하는 것은 논리적 모순이 된다. 
+으로 동작한다. 따라서 두 요소가 동시에 존재하는 것은 논리적 모순이 된다.
+
+
 
 <script src="https://utteranc.es/client.js"
         repo="jchong-dalcomlab/jchong-dalcomlab.github.io"
