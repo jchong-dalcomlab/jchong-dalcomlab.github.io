@@ -29,23 +29,26 @@ description:           >
   with a focus on personal sites that are meant to impress.
 
 # A shorter description for the sidebar.
-tagline:               Change `tagline` in `_config.yml`
+tagline:               >
 
 # A list of keywords for your blog
-keywords:              []
+keywords:              [ "development", "middleware", "C++", "JAVA", "javascript", "React" ]
 
 # A (square) logo for your site.
 # If provided, it will be shown at the top of the sidebar.
 # It also used by the `jekyll-seo-tag` plugin.
-logo:                  /assets/img/logo.png
+logo:                  /assets/img/dalcomlab-bee-fit.png
 
 # This should be the same author as first entry in `_data/authors.yml`.
 author:
   # Used by `jekyll-feed`:
-  name:                <firstname> <lastname>
-  email:               <mail@domain.tld>
-  # # Used by `jekyll-seo-tag`:
-  # twitter:             <username>
+  name:                DalcomLab Inc.
+  email:               <dalcom@dalcomlab.com>
+  picture:             /assets/img/dalcomlab-bee-fit.png
+  social:
+    home:              www.dalcomlab.com
+    github:            dalcomlab
+    email:             dalcom@dalcomlab.com
 
 # Add links to the sidebar.
 menu:
@@ -69,7 +72,7 @@ legal:
     url:               /CHANGELOG/
 
 # This text will appear in a `<small>` tag in the footer of every page.
-copyright:             © 2021. All rights reserved.
+copyright:             © 2024. DalcomLab Inc. All rights reserved.
 
 # Format of the permalinks
 permalink:             /blog/:categories/:year-:month-:day-:title/
