@@ -8,6 +8,10 @@ title: Example
 # The name of the tag, used in a post's front matter (e.g. tags: [<slug>]).
 slug: example
 
+# Note that the type property has been added to indicate it is category.
+# sidebar property is also added, set it to true if you wish to see a category from the sidebar.
+sidebar: true
+
 # (Optional) Write a short (~150 characters) description of this featured tag.
 description: >
   This is a featured category, which have their own page.
