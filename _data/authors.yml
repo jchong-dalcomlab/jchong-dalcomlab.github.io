@@ -2,32 +2,30 @@
 # Must be the same as `author` in `_config.yml`.
 # Change `author1` to your shortname.
 author1:
-  name:              <firstname> <lastname>
-  email:             <mail@domain.tld>
+  name:              DalcomLab Inc.
+  email:             <dalcom@dalcomlab.com>
 
   # Used at the bottom of each page and at the top of the `about` layout
   # Markdown enabled, can use multiple paragraphs (enabled by `|`)
   about:             |
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    
-    Open `_data/authors.yml` to edit this text.
+    좋은 소프트웨어 회사는 좋은 소프트웨어에 의해 만들어집니다. 우리는 오로지 좋은 소프트웨란 무엇인가를 고민합니다.
+    저희 제품과 서비스에 펜이 되주십시오.
 
   # This photo will be used in the about section
   picture:
-    path:            https://placehold.it/128x128
+    path:            /assets/img/dalcomlab-bee-fit.png
     # srcset is optional, but can be used to provide higher res versions for retina displays
     srcset:
-      1x:            https://placehold.it/128x128
-      2x:            https://placehold.it/256x256
+      1x:            /assets/img/dalcomlab-bee-fit.png
+      2x:            /assets/img/dalcomlab-bee-fit.png
 
   # Social media icons in sidebar
   # Comment/uncommet to show/hide
   # Rearrange to change the order in which they appear
   social:
-    twitter:         <username>
-    github:          <username>
+    home:            www.dalcomlab.com
+    github:          dalcomlab
+    facebook:        dalcomlab    
     # email:           <mail@domain.tld>
     # rss:             https://<url>/feed.xml
     # facebook:        <username>
@@ -68,15 +66,31 @@ author1:
 
 # Another author (optional)
 author2:
-  name:              <firtname> <lastname>
-  email:             <mail@domain.tld>
+  name:              jc Hong
+  email:             jchong@dalcomlab.com
   about:             |
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    DalcomLab CEO, devleoper
 
-    Open `_data/authors.yml` to edit this text.
 
-  picture:           https://placehold.it/128x128
-  twitter:           <username>
-  github:            <username>
+  picture:           https://avatars.githubusercontent.com/u/97577230?v=4
+  github:            jchong-dalcomlab
+
+author3:
+  name:              bc Yoo
+  email:             yoo@dalcomlab.com
+  about:             |
+    DalcomLab CTO, devleoper
+
+
+  picture:           https://avatars.githubusercontent.com/u/97580457?v=4
+  github:            yoo-dalcomlab
+
+author4:
+  name:              kj Lee
+  email:             lkj@dalcomlab.com
+  about:             |
+    devleoper
+
+
+  picture:           https://avatars.githubusercontent.com/u/97580572?v=4
+  github:            lkj-dalcomlab
