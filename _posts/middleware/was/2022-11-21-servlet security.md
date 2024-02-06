@@ -2,16 +2,16 @@
 author: author2
 layout: post
 title: Servlet security
+subtitle: Servlet security
 category: middleware
 tag: was
 image: 
-  path: /assets/img/blog/cyber-security.jpg
+  path: /assets/img/blog/was/cyber-security.jpg
 description: >
   본 문서는 Servlet specification 4.0에 기술된 Servlet security를 Servlet containter 구현 관점에서 재해석 했다. 인증과 권한 그리고 웹
   리소스의 보안적 제한에 대한 내용을 다룬다. 
-sitemap: false
+comments: true
 ---
-
 
 웹 어플리케이션은 응용프로그램 개발자에 의해 개발되며 이를 배포자에게 주던, 팔던간에 런타입 환경에 설치며, 응용프로그램 개발자는 보안 요구사항을 배포자와 배포 
 시스템에 전달하게 된다. 이 정보는 애플리케이션의 배포 설명자, 애플리케이션 코드 내의 주석을 사용하거나 ServletRegistration.Dynamic 인터페이스의 
@@ -167,7 +167,7 @@ web.xml에 선언하는 보안정책은 요청 url을 중심으로 해당 리소
 이 어노테이션은 하나의 HttpConstraint와 복수개의 HttpMethodConstraint 하위 annotation을 구성요소로 갖을 수 있다. 적어도 하나는 있어야 이를 사용
 하는 의미가 있다. 
 
-![ServletSecurity anno](/assets/img/blog/ServletSecurity-anno.png)
+![ServletSecurity anno](/assets/img/blog/was/ServletSecurity-anno.png)
 
 ServletSecurity annotation 하위에 구성되는 HttpMethodConstraint annotation은 특정 Http method 에 대한 서블릿 보안 제약을 설정한다. 
 하나의 @HttpMethodConstraint 는 하나의 http protocol method에 대한보안 제한을 지정 할 수 있다. 예를 들어 GET, POST 두 가지에 대한 보안제한을
@@ -297,7 +297,7 @@ web server는 web client에 사용자 인증을 요청한다. 이때 Web server�
 *"당신이 요청한 웹 리소스는 인증이 필요한데 거기에 해당하는 영역 이름은 [realmName]이야"* 
 이런 응답을 받은 브라우저는 사용자가 Basic 인증을 진행할 수 있도록 다음과 같은 UI를 나타낸다.
 
-![Basice authentication](/assets/img/blog/basic-login-ux.png)
+![Basice authentication](/assets/img/blog/was/basic-login-ux.png)
 
 그리고 브라우저는(웹 클라이언트)는 위 화면을 통해 사용자로부터 사용자 이름과 비밀번호를 얻어 웹 서버로 전송한다. 
 
@@ -335,7 +335,7 @@ Disgest 인증은 username, password를 기반으로 한다는 점에서 Basic �
 사용자의 요청 흐름을 이어나가는데 이 리디렉션에는 최초 요청의 헤더를 포함한 파라미터들이 존재하지 않는다. 따라서 form 인증 프로세스는 최초 요청의 요청 파라미
 터 헤더등을 보관 해두었다 마지막 리디렉션 단계의 요청을 원래 요청으로 치환 해야한다. 자세한 내용은 다음 시퀀스를 참고한다.
 
-![form authenticat seqence](/assets/img/blog/form-auth-seq.png)
+![form authenticat seqence](/assets/img/blog/was/form-auth-seq.png)
 
 **_Form Based Authentication과 session간의 상관 관계_**
 
@@ -496,7 +496,7 @@ containter 레벨이서 편리한 장치를 제공하는데 `deny-uncovered-http
 Security constraint 자료구조를 가지고 있으며 이를 복잡, 다양하게 사용하려는 웹 개발자나 containter를 개발하는 필자와 같은 개발자에게는 이에 대한 좀더 
 면밀한 검토가 필요할 것이다.
 
-![security constraint structure](/assets/img/blog/security-constraint-structure.png)
+![security constraint structure](/assets/img/blog/was/security-constraint-structure.png)
 
 ##### url-patten mapping 규칙
 

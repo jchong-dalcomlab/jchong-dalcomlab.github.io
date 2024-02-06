@@ -17,7 +17,7 @@ comments: true
 다른 자료나 책을 통해 가시성에 대한 개념을 이해하고 있는 독자라면 필자가 외 비 가시성이라는 반대가 되는 단어를 만들어 썼는지 감이 왔을것이다. 지난 편에도 아래 그림이 등장했는데 다시한번 고찰 해보자. 
 </p>
 
-![repsimg_cache-use-visibility](https://jchong00.github.io/img/about-concurrent/cache-use-visibility.png){: .center-block :}
+![repsimg_cache-use-visibility](/assets/img/blog/java-concurrent/cache-use-visibility.png){: .center-block :}
 <p style='text-align: center;'>
 [가시성 이슈]
 </p>
@@ -94,7 +94,7 @@ class ForThreadTest implements Runnable {
 하지만 개발자라면 이 미신같은 결과에 흡족해 하면 안된다. 필자의 PC를 기준으로 각 Thread당 100회가 아닌 1000회정도 연산을 시키면 2000이 아닌 1998같은 결과를 얻어낸다. 이 이야기인 즉 가시성이 확보된다 하더라도 원자성 문제(동시에 같은 값을 읽어다 증가시키고 flush하는...)로 인해 이와 같은 문제가 생기는 것이다. 이 문제는 원자성 다루면서 해결 해보자.
 </p> 
 
-![repsimg_cache-use-visibility](https://jchong00.github.io/img/about-concurrent/cache-use-visibility_problem.png){: .center-block :}
+![repsimg_cache-use-visibility](/assets/img/blog/java-concurrent/cache-use-visibility_problem.png){: .center-block :}
 <p style='text-align: center;'>
 [가시성은 확보하였다. 그러나 원자성 문제로 완벽하지 못한 공유자원]
 </p>

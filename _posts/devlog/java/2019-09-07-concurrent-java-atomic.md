@@ -17,7 +17,7 @@ comments: true
 원자성 즉 연산의 원자 단위를 이해하기 위해 이전 편에서도 다루었던 “i++” 를 원자연산으로 분해 해보도록 하겠다.
 </p>
 
-![repsimg_atomic_instruction](.././img/about-concurrent/i_plusplus_atomic_instruction.png){: .center-block :}
+![repsimg_atomic_instruction](/assets/img/blog/java-concurrent/i_plusplus_atomic_instruction.png){: .center-block :}
 <p style='text-align: center;'>
 [프로그램 언어 문장 -> machine instruction 변환]
 </p>

@@ -2,14 +2,15 @@
 author: author2
 layout: post
 title: context path를 결정하는 3가지 방법
+subtitle: context path를 결정하는 3가지 방법
 category: middleware
 tag: was
 image: 
-  path: /assets/img/blog/context-path.png
+  path: /assets/img/blog/was/context-path.png
 description: >
   WAS라고 부르는 java web application server에 web application을 배포하면 context path 라고하는 경로가 생성된다. 이 문서는 이를 결정하는 3
   가지 요소에 대해 정리하려 한다.
-sitemap: false
+comments: true
 ---
 
 구현체 마다 다르지만 Web application server(이하 server)에는 복수의 host를 구성할 수 있으며 하나의 host내에는 복수의 web application을 배포

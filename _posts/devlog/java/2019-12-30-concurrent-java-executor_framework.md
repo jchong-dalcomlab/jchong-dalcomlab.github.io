@@ -19,7 +19,7 @@ comments: true
 Executor framework은 이와 같은 thread pool을 구성하고 다룰 수 있는 일련의 구조를 제시한다. 
 </p>
 
-![img executor framework metaphor](.././img/about-concurrent/executor-framework-metaphor.png){: .center-block :}
+![img executor framework metaphor](/assets/img/blog/java-concurrent/executor-framework-metaphor.png){: .center-block :}
 <p style='text-align: center;'>
 [Executor framework 은유]
 </p>
@@ -28,7 +28,7 @@ Executor framework은 이와 같은 thread pool을 구성하고 다룰 수 있�
 다음 그림은 이와 관련된 주요 interface와 class들의 class diagram이다.
 </p>
 
-![img executor framework classes](.././img/about-concurrent/executor-class-diagram.png){: .center-block :}
+![img executor framework classes](/assets/img/blog/java-concurrent/executor-class-diagram.png){: .center-block :}
 <p style='text-align: center;'>
 [Executor framework classes]
 </p>
@@ -44,7 +44,7 @@ Executor framework은 이와 같은 thread pool을 구성하고 다룰 수 있�
 다음 그림은 thread pool 동작 메커니즘을 설명하고 있다. ThreadPoolExecutor를 생성하고 이를 통해서 작업을 submit하면 해당 작업은 Queue에 등록이 Future라고 하는 티켓을 반환한다. 미리 혹은 즉시 생성된 Thread는 해당 작업을 수행하고 Future의 상태를 변경한다. (isDone() 함수로 확인할 수 있다.) 작업을 요청한 thread는 Future의 상태를 계속(주기적으로) 감시하여 완료가 확인이 되면 get() 함수를 통해 결과를 얻는다. 작업에서 예외가 발생한다면 get() 함수를 호출할 때 예외가 catch된다.
 </p>
 
-![img executor framework flow](.././img/about-concurrent/executor-framework-flow.png){: .center-block :}
+![img executor framework flow](/assets/img/blog/java-concurrent/executor-framework-flow.png){: .center-block :}
 <p style='text-align: center;'>
 [Executor framework flow]
 </p>
@@ -339,7 +339,7 @@ execute 로 thread task를 실행하다 예외가 발생하면 해당 thread는 
 executor framework의 구현 class들 중에 ForkJoinPool이라는 class가 있다. 이는 큰 업무를 작은 단위로 나누고(fork) 정해진수의 thread가 이를 처리한 후 결과를 취합하는 방법을 제시한다. 이는 분할정복 알고리즘에 기초한다.
 </p>
 
-![img executor framework classes](.././img/about-concurrent/forkjoinpool.png){: .center-block :}
+![img executor framework classes](/assets/img/blog/java-concurrent/forkjoinpool.png){: .center-block :}
 <p style='text-align: center;'>
 [분할과 취합]
 </p>
@@ -348,7 +348,7 @@ executor framework의 구현 class들 중에 ForkJoinPool이라는 class가 있�
 executor framework의 구현 class들 중에 ForkJoinPool이라는 class가 있다. 이는 큰 업무를 작은 단위로 나누고(fork) 정해진수의 thread가 이를 처리한 후 결과를 취합하는 방법을 제시한다. 이는 분할정복 알고리즘에 기초한다.
 </p>
 
-![img executor framework classes](.././img/about-concurrent/forkjoinpool_deque.png){: .center-block :}
+![img executor framework classes](/assets/img/blog/java-concurrent/forkjoinpool_deque.png){: .center-block :}
 <p style='text-align: center;'>
 [각 스레드의 deque 그리고 steal 작용]
 </p>
