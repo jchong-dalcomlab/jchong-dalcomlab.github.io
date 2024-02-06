@@ -1,5 +1,4 @@
 
-
 function spread(count){
     document.getElementById('folder-checkbox-' + count).checked =
     !document.getElementById('folder-checkbox-' + count).checked

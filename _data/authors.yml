@@ -9,7 +9,7 @@ author1:
   # Markdown enabled, can use multiple paragraphs (enabled by `|`)
   about:             |
     좋은 소프트웨어 회사는 좋은 소프트웨어에 의해 만들어집니다. 우리는 오로지 좋은 소프트웨란 무엇인가를 고민합니다.
-    저희 제품과 서비스에 펜이 되주십시오.
+    |저희 제품과 서비스에 펜이 되주십시오.
 
   # This photo will be used in the about section
   picture:
