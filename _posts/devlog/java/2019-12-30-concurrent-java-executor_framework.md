@@ -8,12 +8,12 @@ tag: java
 comments: true
 ---
 
-# 프롤로그
+## 프롤로그
 <p style='text-align: justify;'>
 이번 글에서 다루려고 하는 Executor framework는 지금까지 작성해온 스레드 관련된 글에서 예제 코드를 통해 이미 많이 등장했던 내용이다. 전통적인 방법으로 Runnable을 구현하여 Task를 만들고 start()를 호출하여 새로운 스레드를 만드는 방법을 사용하다 보면 자칫 너무 많은 스레드를 만들어 오히려 효율을 떨어뜨리는 문제가 있다. 이런 문제의 해결을 위해 JAVA 1.5에서 처음 이 개념이 등장했다. 적절한 thread 수를 유지시키고 submit 된 작업을 먼저 Queuing 하고 이를 준비된 thread들이 가져다 작업을 하고 결과를 반환하는 방식이다.
 </p>
 
-# Executor framework Overview
+## Executor framework Overview
 <p style='text-align: justify;'>
 다음 그림은 서론에서 설명한 작업 Queue와 Thread pool로 구성된 Executor의 핵심구조이다. Executor에 작업을 등록(submit)하면 Future 라고하는 미래형 티켓을 발급한다. Thread pool 내의 thread중 하나의 thread가 작업을 가져다 수행을 하고 이 티켓에 작업 결과를 연결한다. 문득 요리사가 여러 명 있는 큰 식당의 주방이 떠오른다. 웨이터가 주문을 받고 주문서를 지정된 위치에 등록해두면 요리사들은 순차적으로 이 주문서에 맞는 조리를 시작한다. 조리가 끝나면 이 주문서와 해당 요리를 다시 웨이터가 가져갈 수 있는 위치에 올려놓는다. 웨이터는 다른 일을 하면서 주기적으로 이 위치에 요리를 확인하고 손님에게 서브를 하는 절차를 수행한다.
 Executor framework은 이와 같은 thread pool을 구성하고 다룰 수 있는 일련의 구조를 제시한다. 
@@ -37,7 +37,7 @@ Executor framework은 이와 같은 thread pool을 구성하고 다룰 수 있�
 이 외에도 스레드의 task를 정의하는 interface인 Runnable과 Callable 그리고 적절한 스레드 풀을 생성하게 도와주는 helper class인 Executors class도 많이 사용한다.
 </p>
 
-# ThreadPoolExecutor 
+## ThreadPoolExecutor 
 <p style='text-align: justify;'>
 상속 구조를 보면 인터페이스 상층에 Executor와 ExecutorService가 정의되어 있다. Executor에는 execute 가 유일한 함수다. 일반적으로 ExecutorService 인터페이스를 이용하여 thread pool을 다룬다. execute 함수는 task가 끝나면 해당 thread 도 파괴되기 때문에 효율이 떨어진다. 그렇기 때문에 특별한 경우가 아니라면 submit 함수를 이용하여 작업 실행을 요청하는 것이 일반적인데 그러기 위해서는 최소한 ExecutorService를 이용해야 한다. 
 
@@ -164,7 +164,7 @@ workQueue | 작업을 실행시키기 전에 대기시키는 Queue
 threadFactory | executor가 새로운 thread를 만들때 사용하는 factory
 handler | thread의 한계 수치나 Queue의 용량을 초과 할 때 사용할 헨들러
 
-# execute와 submit method에 대한 고찰
+## execute와 submit method에 대한 고찰
 <p style='text-align: justify;'>
 두 메소드의 공통점은 executor에게 작업을 요청한다는 것이다. execute는 요청 작업의 인자로 Runnable만 허용을 하고 submit은 Runnable과 Callable interface를 모두 허용한다. 이는 submit 은 작업의 결과를 받을 수 있음의 의미한다. 그래서인지 예외가 발생할 경우 execute의 경우 반환의 통로가 없기 때문에 JVM에 예외가 전파되고 해당 thread는 파괴된다. submit은 get을 하여 처리 결과를 확인하기 전까지는 예외 발생을 확인할 방법이 없다. 당연한 이야기지만 submit 처리 중 오류가 발생해도 thread는 process에 남아있으며 재활용의 대상이 된다.
 </p>
@@ -334,7 +334,7 @@ execute 로 thread task를 실행하다 예외가 발생하면 해당 thread는 
 > Current thread name: ByExecute-Thread_10 <br />
 
 
-# ForkJoinPool
+## ForkJoinPool
 <p style='text-align: justify;'>
 executor framework의 구현 class들 중에 ForkJoinPool이라는 class가 있다. 이는 큰 업무를 작은 단위로 나누고(fork) 정해진수의 thread가 이를 처리한 후 결과를 취합하는 방법을 제시한다. 이는 분할정복 알고리즘에 기초한다.
 </p>
@@ -494,13 +494,13 @@ public void findLogFilesByForkJoinPool() {
 특정 폴더를 기준으로 검색을 시키면 필자의 PC의 경우 단일 thread, 재귀호출 조건으로 호출한 결과와 비교하면 분명 빠르다. 그러나 fixed thread pool 보다 느린 경우도 있다. 빠른 경우도 있다는 뜻이다. 대체적으로 검색 대상 폴더가 상위 폴더 즉 검색대상이 많은 경우에 약간 우수한 성능을 보이는 것이 일반적 이였다.
 </p>
 
-# 애필로그
+## 애필로그
 <p style='text-align: justify;'>
 스레드를 만들고 관리하는 관점에서 executor framework 즉 thread pool은 많은 편리함과 이점을 가져다준다. 그러나 모든 문명의 이기가 그렇듯이 그 특성을 잘 알고 사용하는 것이 좋다. 이번 편에서 다루지 못한 ScheduledExecutorService, 예외처리를 위한 ThreadPoolExecutor의 확장에 대한 글을 예고한다.
 </p>
 
 
-## 참고자료
+### 참고자료
 
 [쓰레드풀 과 ForkJoinPool](https://hamait.tistory.com/612)<br />
 [About STL : C++ STL 프로그래밍(5)-덱(deque) : (1)](http://www.hanbit.co.kr/channel/category/category_view.html?cms_code=CMS3942847236)<br />
