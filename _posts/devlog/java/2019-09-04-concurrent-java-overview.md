@@ -5,6 +5,8 @@ title: Java Concurrent Programming - Overview
 subtitle: About Java Concurrent Programming, Overview page
 category: devlog
 tag: java
+image: 
+  path: /assets/img/blog/java-concurrent/thread.jpg
 description: >
     이번 글은 Java concurrent programming의 기초 개념인 가시성과 원자성에 대해 알아본다.
 comments: true
